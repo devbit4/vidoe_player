@@ -1,13 +1,22 @@
 import react from 'react';
+
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import ReactPlayer from 'react-player';
-import { styled } from '@mui/system';
 import Grid from '@mui/material/Grid';
-import { Button } from '@mui/material';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+
+import ReactPlayer from 'react-player';
+
+import { styled } from '@mui/system';
+
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import FastRewindIcon from '@mui/icons-material/FastRewind';
+import FastForwardIcon from '@mui/icons-material/FastForward';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import PauseIcon from '@mui/icons-material/Pause';
 
 const PlayerWrapper = styled('div')({
   width: '100%',
@@ -25,6 +34,15 @@ const ControlsWrapper = styled('div')({
   flexDirection: 'column',
   justifyContent: 'space-between',
   zIndex: 1,
+});
+const ControlIcon = styled(IconButton)({
+  color: '#777',
+  fontSize: 50,
+  transform: 'scale(0.9)',
+  '&hover': {
+    color: '#fff',
+    transform: 'scale(1)',
+  },
 });
 
 function App() {
@@ -59,16 +77,32 @@ function App() {
                   Video Title
                 </Typography>
               </Grid>
-
               <Grid item>
                 <Button
                   variant='contained'
                   color='primary'
-                  startIcon={<BookmarkIcon></BookmarkIcon>}
+                  startIcon={<BookmarkIcon />}
                 >
                   Bookmark
                 </Button>
               </Grid>
+            </Grid>
+            {/* middle controller */}
+            <Grid
+              container
+              direction='row'
+              alignItems='center'
+              justify='center'
+            >
+              <ControlIcon aria-label='rewind'>
+                <FastRewindIcon fontSize='inherit' />
+              </ControlIcon>
+              <ControlIcon aria-label='play'>
+                <PlayArrowIcon fontSize='inherit' />
+              </ControlIcon>
+              <ControlIcon aria-label='forward'>
+                <FastForwardIcon fontSize='inherit' />
+              </ControlIcon>
             </Grid>
           </ControlsWrapper>
         </PlayerWrapper>
