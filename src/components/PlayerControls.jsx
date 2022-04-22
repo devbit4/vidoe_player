@@ -20,7 +20,6 @@ import VolumeUpIcon from '@mui/icons-material/VolumeUp';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 import { styled } from '@mui/system';
-import PlayerControls from './components/PlayerControls';
 
 const ControlsWrapper = styled('div')({
   position: 'absolute',
@@ -98,8 +97,7 @@ const SpeedPopper = styled(Popper)({
   zIndex: '1',
 });
 
-function App() {
-  // 변수명 고치기
+function PlayerControls() {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleSpeedClick = (event) => {
@@ -112,29 +110,103 @@ function App() {
 
   const open = Boolean(anchorEl);
   const id = open ? 'playbackrate-popper' : undefined;
-
   return (
-    <>
-      <AppBar position='fixed'>
-        <Toolbar>
-          <Typography variant='h6'>React Video Player</Typography>
-        </Toolbar>
-      </AppBar>
-      <Toolbar />
-      <Container maxWidth='md'>
-        <PlayerWrapper>
-          <ReactPlayer
-            width={'100%'}
-            height={'100%'}
-            url='http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4'
-            muted={true}
-            playing={true}
+    <ControlsWrapper>
+      {/* top controller */}
+      <Grid
+        container
+        direction='row'
+        alignItems='center'
+        justifyContent='space-between'
+        style={{ padding: 16 }}
+      >
+        <Grid item>
+          <Typography variant='h5' style={{ color: '#fff' }}>
+            Video Title
+          </Typography>
+        </Grid>
+        <Grid item>
+          <Button
+            variant='contained'
+            color='primary'
+            startIcon={<BookmarkIcon />}
+          >
+            Bookmark
+          </Button>
+        </Grid>
+      </Grid>
+      {/* middle controller */}
+      <Grid
+        container
+        direction='row'
+        alignItems='center'
+        justifyContent='center'
+      >
+        <ControlIcon aria-label='rewind'>
+          <FastRewindIcon fontSize='inherit' />
+        </ControlIcon>
+        <ControlIcon aria-label='play'>
+          <PlayArrowIcon fontSize='inherit' />
+        </ControlIcon>
+        <ControlIcon aria-label='forward'>
+          <FastForwardIcon fontSize='inherit' />
+        </ControlIcon>
+      </Grid>
+      {/* bottom controller */}
+      <Grid
+        container='row'
+        alignItems='center'
+        justifyContent='space-between'
+        style={{ padding: 16 }}
+      >
+        <Grid item xs={12}>
+          <PrettoSlider
+            min={0}
+            max={100}
+            defaultValue={20}
+            valueLabelDisplay='auto'
           />
-          <PlayerControls />
-        </PlayerWrapper>
-      </Container>
-    </>
+        </Grid>
+        <Grid item>
+          <Grid container direction='row' alignItems='center'>
+            <BottomIcon>
+              <PlayArrowIcon fontSize='large' />
+            </BottomIcon>
+            <BottomIcon>
+              <VolumeUpIcon fontSize='large' />
+            </BottomIcon>
+            <VolumeSlider min={0} max={100} defaultValue={100}></VolumeSlider>
+            <Button variant='text' style={{ color: '#fff', marginLeft: 16 }}>
+              <Typography>05:05</Typography>
+            </Button>
+          </Grid>
+        </Grid>
+        <Grid item>
+          <BottomIcon variant='text' onClick={handleSpeedClick}>
+            <Typography>1X</Typography>
+          </BottomIcon>
+          <SpeedPopper
+            id={id}
+            open={open}
+            onClose={handleClose}
+            anchorEl={anchorEl}
+            placement={'top'}
+          >
+            <Grid container direction='column-reverse'>
+              {[0.5, 1, 1.5, 2].map((rate) => (
+                <Button variant='contained'>
+                  <Typography>{rate}X</Typography>
+                </Button>
+              ))}
+            </Grid>
+          </SpeedPopper>
+          <BottomIcon>
+            <FullscreenIcon fontSize='large' />
+          </BottomIcon>
+        </Grid>
+      </Grid>
+    </ControlsWrapper>
   );
 }
 
-export default App;
+export default PlayerControls;
