@@ -5,6 +5,9 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import ReactPlayer from 'react-player';
 import { styled } from '@mui/system';
+import Grid from '@mui/material/Grid';
+import { Button } from '@mui/material';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 const PlayerWrapper = styled('div')({
   width: '100%',
@@ -42,7 +45,32 @@ function App() {
             muted={true}
             playing={true}
           />
-          <ControlsWrapper></ControlsWrapper>
+          <ControlsWrapper>
+            {/* top controller */}
+            <Grid
+              container
+              direction='row'
+              alignItems='center'
+              justifyContent='space-between'
+              style={{ padding: 16 }}
+            >
+              <Grid item>
+                <Typography variant='h5' style={{ color: '#fff' }}>
+                  Video Title
+                </Typography>
+              </Grid>
+
+              <Grid item>
+                <Button
+                  variant='contained'
+                  color='primary'
+                  startIcon={<BookmarkIcon></BookmarkIcon>}
+                >
+                  Bookmark
+                </Button>
+              </Grid>
+            </Grid>
+          </ControlsWrapper>
         </PlayerWrapper>
       </Container>
     </>
