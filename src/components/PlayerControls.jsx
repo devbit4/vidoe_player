@@ -100,7 +100,6 @@ function PlayerControls(props) {
     onMuted,
     volume,
     onVolumeChange,
-    onVolumeKeyChange,
     speedRate,
     onSpeedRateClick,
   } = props;

@@ -16,11 +16,12 @@ const PlayerWrapper = styled('div')({
 });
 
 function App() {
-  // middle controller
+  // 재생,일시정지
   const [play, setPlay] = useState(true);
   const handlePlayPause = () => {
     setPlay(!play);
   };
+  // 앞으로감기, 뒤로감기
   const player = useRef();
   const handleRewind = () => {
     player.current.seekTo(player.current.getCurrentTime() - 30);
@@ -28,23 +29,20 @@ function App() {
   const handleForward = () => {
     player.current.seekTo(player.current.getCurrentTime() + 30);
   };
-  // bottom controller
+  // 음소거 해제
   const [muted, setMuted] = useState(false);
   const handleMuted = () => {
     setMuted(!muted);
     setVolume(!muted ? 0 : 0.2);
   };
+  // 볼륨 기능
   const [volume, setVolume] = useState(0.5);
   const handleVolumeChange = (e) => {
     const newValue = Number(e.target.value);
     setVolume(newValue / 100);
     setMuted(newValue === 0 ? true : false);
   };
-  const handleVolumeKeyChange = (e) => {
-    const newValue = Number(e.target.value);
-    setVolume(newValue / 100);
-    setMuted(newValue === 0 ? true : false);
-  };
+  // 재생 속도
   const [speedRate, setSpeedRate] = useState(1);
   const handleSpeedRateClick = (speed) => {
     setSpeedRate(speed);
@@ -78,7 +76,6 @@ function App() {
             onMuted={handleMuted}
             volume={volume}
             onVolumeChange={handleVolumeChange}
-            onVolumeKeyChange={handleVolumeKeyChange}
             speedRate={speedRate}
             onSpeedRateClick={handleSpeedRateClick}
           />
