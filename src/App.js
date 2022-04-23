@@ -55,7 +55,18 @@ function App() {
   const handleFullScreen = () => {
     screenfull.toggle(playerWrapper.current);
   };
+  // 프로그래스바
+  const [played, setPlayed] = useState(0);
+  const handleProgress = (progress) => {
+    setPlayed(progress.played);
+  };
+  const handlePlayedChange = (e) => {
+    const newValue = Number(e.target.value);
+    setPlayed(newValue / 100);
+    player.current.seekTo(newValue / 100);
+  };
 
+  console.log(player.current);
   return (
     <>
       <AppBar position='fixed'>
@@ -75,6 +86,7 @@ function App() {
             playing={play}
             volume={volume}
             playbackRate={speedRate}
+            onProgress={handleProgress}
           />
           <PlayerControls
             play={play}
@@ -88,6 +100,8 @@ function App() {
             speedRate={speedRate}
             onSpeedRateClick={handleSpeedRateClick}
             onFullScreen={handleFullScreen}
+            played={played}
+            onPlayedChange={handlePlayedChange}
           />
         </PlayerWrapper>
       </Container>

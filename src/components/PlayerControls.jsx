@@ -103,6 +103,8 @@ function PlayerControls(props) {
     speedRate,
     onSpeedRateClick,
     onFullScreen,
+    played,
+    onPlayedChange,
   } = props;
   const [speed, setSpeed] = useState(null);
   const handleSpeedClick = (e) => {
@@ -175,8 +177,9 @@ function PlayerControls(props) {
           <PrettoSlider
             min={0}
             max={100}
-            defaultValue={20}
+            value={played * 100}
             valueLabelDisplay='auto'
+            onChange={onPlayedChange}
           />
         </Grid>
         <Grid item>
