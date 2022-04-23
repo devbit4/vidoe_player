@@ -7,7 +7,10 @@ import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 
 import { styled } from '@mui/system';
+
 import PlayerControls from './components/PlayerControls';
+
+import screenfull from 'screenfull';
 
 const PlayerWrapper = styled('div')({
   width: '100%',
@@ -47,6 +50,11 @@ function App() {
   const handleSpeedRateClick = (speed) => {
     setSpeedRate(speed);
   };
+  // 풀스크린
+  const playerWrapper = useRef();
+  const handleFullScreen = () => {
+    screenfull.toggle(playerWrapper.current);
+  };
 
   return (
     <>
@@ -57,7 +65,7 @@ function App() {
       </AppBar>
       <Toolbar />
       <Container maxWidth='md'>
-        <PlayerWrapper>
+        <PlayerWrapper ref={playerWrapper}>
           <ReactPlayer
             ref={player}
             width={'100%'}
@@ -66,6 +74,7 @@ function App() {
             muted={muted}
             playing={play}
             volume={volume}
+            playbackRate={speedRate}
           />
           <PlayerControls
             play={play}
@@ -78,6 +87,7 @@ function App() {
             onVolumeChange={handleVolumeChange}
             speedRate={speedRate}
             onSpeedRateClick={handleSpeedRateClick}
+            onFullScreen={handleFullScreen}
           />
         </PlayerWrapper>
       </Container>

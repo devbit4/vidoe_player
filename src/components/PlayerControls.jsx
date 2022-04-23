@@ -102,6 +102,7 @@ function PlayerControls(props) {
     onVolumeChange,
     speedRate,
     onSpeedRateClick,
+    onFullScreen,
   } = props;
   const [speed, setSpeed] = useState(null);
   const handleSpeedClick = (e) => {
@@ -237,7 +238,7 @@ function PlayerControls(props) {
               ))}
             </Grid>
           </SpeedPopper>
-          <BottomIcon>
+          <BottomIcon onClick={onFullScreen}>
             <FullscreenIcon fontSize='large' />
           </BottomIcon>
         </Grid>
