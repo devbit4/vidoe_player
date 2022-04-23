@@ -13,6 +13,7 @@ import FastForwardIcon from '@mui/icons-material/FastForward';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import PauseIcon from '@mui/icons-material/Pause';
 import VolumeUpIcon from '@mui/icons-material/VolumeUp';
+import VolumeOffIcon from '@mui/icons-material/VolumeOff';
 import FullscreenIcon from '@mui/icons-material/Fullscreen';
 
 import { styled } from '@mui/system';
@@ -90,7 +91,19 @@ const SpeedPopper = styled(Popper)({
 });
 
 function PlayerControls(props) {
-  const { play, onPlayPause } = props;
+  const {
+    play,
+    onPlayPause,
+    onRewind,
+    onForward,
+    muted,
+    onMuted,
+    volume,
+    onVolumeChange,
+    onVolumeKeyChange,
+    speedRate,
+    onSpeedRateClick,
+  } = props;
   const [speed, setSpeed] = useState(null);
   const handleSpeedClick = (e) => {
     setSpeed(speed ? null : e.target);
@@ -133,10 +146,10 @@ function PlayerControls(props) {
         alignItems='center'
         justifyContent='center'
       >
-        <ControlIcon aria-label='rewind'>
+        <ControlIcon aria-label='rewind' onClick={onRewind}>
           <FastRewindIcon fontSize='inherit' />
         </ControlIcon>
-        {play ? (
+        {!play ? (
           <ControlIcon aria-label='play' onClick={onPlayPause}>
             <PlayArrowIcon fontSize='inherit' />
           </ControlIcon>
@@ -146,7 +159,7 @@ function PlayerControls(props) {
           </ControlIcon>
         )}
 
-        <ControlIcon aria-label='forward'>
+        <ControlIcon aria-label='forward' onClick={onForward}>
           <FastForwardIcon fontSize='inherit' />
         </ControlIcon>
       </Grid>
@@ -168,20 +181,31 @@ function PlayerControls(props) {
         </Grid>
         <Grid item>
           <Grid container direction='row' alignItems='center'>
-            {play ? (
-              <BottomIcon>
-                <PlayArrowIcon fontSize='large' onClick={onPlayPause} />
+            {!play ? (
+              <BottomIcon onClick={onPlayPause}>
+                <PlayArrowIcon fontSize='large' />
               </BottomIcon>
             ) : (
-              <BottomIcon>
-                <PauseIcon fontSize='large' onClick={onPlayPause} />
+              <BottomIcon onClick={onPlayPause}>
+                <PauseIcon fontSize='large' />
               </BottomIcon>
             )}
-
-            <BottomIcon>
-              <VolumeUpIcon fontSize='large' />
-            </BottomIcon>
-            <VolumeSlider min={0} max={100} defaultValue={100} />
+            {muted ? (
+              <BottomIcon onClick={onMuted}>
+                <VolumeOffIcon fontSize='large' />
+              </BottomIcon>
+            ) : (
+              <BottomIcon onClick={onMuted}>
+                <VolumeUpIcon fontSize='large' />
+              </BottomIcon>
+            )}
+            <VolumeSlider
+              min={0}
+              max={100}
+              value={volume * 100}
+              onChange={onVolumeChange}
+              //   onChangeCommitted={onVolumeKeyChange}
+            />
             <Button variant='text' style={{ color: '#fff', marginLeft: 16 }}>
               <Typography>05:05</Typography>
             </Button>
@@ -189,7 +213,7 @@ function PlayerControls(props) {
         </Grid>
         <Grid item>
           <BottomIcon variant='text' onClick={handleSpeedClick}>
-            <Typography>1X</Typography>
+            <Typography>{speedRate}X</Typography>
           </BottomIcon>
           <SpeedPopper
             id='speedPopper'
@@ -200,8 +224,16 @@ function PlayerControls(props) {
           >
             <Grid container direction='column-reverse'>
               {[0.5, 1, 1.5, 2].map((rate) => (
-                <Button variant='contained' key={rate}>
-                  <Typography>{rate}X</Typography>
+                <Button
+                  variant='contained'
+                  key={rate}
+                  onClick={() => onSpeedRateClick(rate)}
+                >
+                  <Typography
+                    color={speedRate === rate ? 'secondary' : 'default'}
+                  >
+                    {rate}X
+                  </Typography>
                 </Button>
               ))}
             </Grid>
