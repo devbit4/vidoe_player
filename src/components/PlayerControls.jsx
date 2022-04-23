@@ -1,10 +1,6 @@
 import { useState } from 'react';
-import ReactPlayer from 'react-player';
 
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
@@ -33,11 +29,7 @@ const ControlsWrapper = styled('div')({
   justifyContent: 'space-between',
   zIndex: 1,
 });
-const PlayerWrapper = styled('div')({
-  width: '100%',
-  backgroundColor: 'red ',
-  position: 'relative',
-});
+
 const ControlIcon = styled(IconButton)({
   color: '#777',
   fontSize: 50,
@@ -97,19 +89,18 @@ const SpeedPopper = styled(Popper)({
   zIndex: '1',
 });
 
-function PlayerControls() {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const handleSpeedClick = (event) => {
-    setAnchorEl(anchorEl ? null : event.currentTarget);
+function PlayerControls(props) {
+  const { play, onPlayPause } = props;
+  const [speed, setSpeed] = useState(null);
+  const handleSpeedClick = (e) => {
+    setSpeed(speed ? null : e.target);
   };
-
   const handleClose = () => {
-    setAnchorEl(null);
+    setSpeed(null);
   };
+  const open = Boolean(speed);
+  //   const id = open ? 'speed-poper' : undefined;
 
-  const open = Boolean(anchorEl);
-  const id = open ? 'playbackrate-popper' : undefined;
   return (
     <ControlsWrapper>
       {/* top controller */}
@@ -145,16 +136,24 @@ function PlayerControls() {
         <ControlIcon aria-label='rewind'>
           <FastRewindIcon fontSize='inherit' />
         </ControlIcon>
-        <ControlIcon aria-label='play'>
-          <PlayArrowIcon fontSize='inherit' />
-        </ControlIcon>
+        {play ? (
+          <ControlIcon aria-label='play' onClick={onPlayPause}>
+            <PlayArrowIcon fontSize='inherit' />
+          </ControlIcon>
+        ) : (
+          <ControlIcon aria-label='play' onClick={onPlayPause}>
+            <PauseIcon fontSize='inherit' />
+          </ControlIcon>
+        )}
+
         <ControlIcon aria-label='forward'>
           <FastForwardIcon fontSize='inherit' />
         </ControlIcon>
       </Grid>
       {/* bottom controller */}
       <Grid
-        container='row'
+        container
+        direction='row'
         alignItems='center'
         justifyContent='space-between'
         style={{ padding: 16 }}
@@ -169,13 +168,20 @@ function PlayerControls() {
         </Grid>
         <Grid item>
           <Grid container direction='row' alignItems='center'>
-            <BottomIcon>
-              <PlayArrowIcon fontSize='large' />
-            </BottomIcon>
+            {play ? (
+              <BottomIcon>
+                <PlayArrowIcon fontSize='large' onClick={onPlayPause} />
+              </BottomIcon>
+            ) : (
+              <BottomIcon>
+                <PauseIcon fontSize='large' onClick={onPlayPause} />
+              </BottomIcon>
+            )}
+
             <BottomIcon>
               <VolumeUpIcon fontSize='large' />
             </BottomIcon>
-            <VolumeSlider min={0} max={100} defaultValue={100}></VolumeSlider>
+            <VolumeSlider min={0} max={100} defaultValue={100} />
             <Button variant='text' style={{ color: '#fff', marginLeft: 16 }}>
               <Typography>05:05</Typography>
             </Button>
@@ -186,15 +192,15 @@ function PlayerControls() {
             <Typography>1X</Typography>
           </BottomIcon>
           <SpeedPopper
-            id={id}
+            id='speedPopper'
             open={open}
             onClose={handleClose}
-            anchorEl={anchorEl}
-            placement={'top'}
+            anchorEl={speed}
+            placement='top'
           >
             <Grid container direction='column-reverse'>
               {[0.5, 1, 1.5, 2].map((rate) => (
-                <Button variant='contained'>
+                <Button variant='contained' key={rate}>
                   <Typography>{rate}X</Typography>
                 </Button>
               ))}
