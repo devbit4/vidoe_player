@@ -65,15 +65,39 @@ function App() {
     setPlayed(newValue / 100);
     player.current.seekTo(newValue / 100);
   };
+  // 시간
+  const currentTime = player.current
+    ? player.current.getCurrentTime()
+    : '00:00';
+  const duration = player.current ? player.current.getDuration() : '00:00';
+
+  const format = (seconds) => {
+    if (isNaN(seconds)) {
+      return '00:00';
+    }
+    const date = new Date(seconds * 1000);
+    const hh = date.getUTCHours();
+    const mm = date.getUTCMinutes();
+    const ss = date.getUTCSeconds().toString().padStart(2, '0');
+    if (hh) {
+      return `${hh}:${mm.toString().padStart(2, '0')}:${ss}`;
+    }
+    return `${mm}:${ss}`;
+  };
+
+  const passedTime = format(currentTime);
+  const totalTime = format(duration);
+
+  const [time, setTime] = useState('normal');
 
   console.log(player.current);
   return (
     <>
-      <AppBar position='fixed'>
+      {/* <AppBar position='fixed'>
         <Toolbar>
           <Typography variant='h6'>React Video Player</Typography>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
       <Toolbar />
       <Container maxWidth='md'>
         <PlayerWrapper ref={playerWrapper}>
@@ -87,6 +111,8 @@ function App() {
             volume={volume}
             playbackRate={speedRate}
             onProgress={handleProgress}
+            elapsedTime={passedTime}
+            totalDuration={totalTime}
           />
           <PlayerControls
             play={play}
@@ -102,6 +128,8 @@ function App() {
             onFullScreen={handleFullScreen}
             played={played}
             onPlayedChange={handlePlayedChange}
+            passedTime={passedTime}
+            totalTime={totalTime}
           />
         </PlayerWrapper>
       </Container>

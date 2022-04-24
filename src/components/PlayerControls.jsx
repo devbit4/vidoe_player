@@ -105,6 +105,8 @@ function PlayerControls(props) {
     onFullScreen,
     played,
     onPlayedChange,
+    passedTime,
+    totalTime,
   } = props;
   const [speed, setSpeed] = useState(null);
   const handleSpeedClick = (e) => {
@@ -210,7 +212,9 @@ function PlayerControls(props) {
               //   onChangeCommitted={onVolumeKeyChange}
             />
             <Button variant='text' style={{ color: '#fff', marginLeft: 16 }}>
-              <Typography>05:05</Typography>
+              <Typography>
+                {passedTime}/{totalTime}
+              </Typography>
             </Button>
           </Grid>
         </Grid>
